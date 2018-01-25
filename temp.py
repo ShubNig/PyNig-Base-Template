@@ -26,8 +26,7 @@ Your input error
 if __name__ == '__main__':
     folder_path = ''
     if len(sys.argv) < 2:
-        print
-        error_info
+        print error_info
         exit(1)
     parser = optparse.OptionParser('\n%prog ' + ' -p \n\tOr %prog <folder>\n' + hint_help_info)
     parser.add_option('-v', dest='v_verbose', action="store_true", help="see verbose", default=False)
