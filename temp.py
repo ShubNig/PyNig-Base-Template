@@ -26,6 +26,10 @@ Your input error
 
 
 class PLog:
+    """
+    for print log color
+    """
+
     def __init__(self):
         pass
 
@@ -110,6 +114,7 @@ if __name__ == '__main__':
     if options.f_folder is not None:
         folder_path = options.f_folder
     if not is_verbose:
+        # TODO delete this for dev
         print
         'todo what you want delete this'
         PLog.log("todo what you want before", 'w', True)
