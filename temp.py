@@ -4,6 +4,7 @@
 import os
 import re
 import sys
+import platform
 import optparse
 
 __author__ = 'sinlov'
@@ -16,24 +17,91 @@ hint_help_info = """
 more information see
 """
 
-error_info = """
+enter_error_info = """
 Your input error
     Usage:
         ./temp.py --help
     or input [-h] to see help
 """
 
+
+class PLog:
+    def __init__(self):
+        pass
+
+    ERROR = '\033[91m'
+    OK_GREEN = '\033[96m'
+    WARNING = '\033[93m'
+    OK_BLUE = '\033[94m'
+    HEADER = '\033[95m'
+    WRITE = '\033[98m'
+    BLACK = '\033[97m'
+    END_LI = '\033[0m'
+
+    @staticmethod
+    def log_normal(info):
+        print PLog.WRITE + info + PLog.END_LI
+
+    @staticmethod
+    def log_assert(info):
+        print PLog.BLACK + info + PLog.END_LI
+
+    @staticmethod
+    def log_info(info):
+        print PLog.OK_GREEN + info + PLog.END_LI
+
+    @staticmethod
+    def log_debug(info):
+        print PLog.OK_BLUE + info + PLog.END_LI
+
+    @staticmethod
+    def log_warning(info):
+        print PLog.WARNING + info + PLog.END_LI
+
+    @staticmethod
+    def log_error(info):
+        print PLog.ERROR + info + PLog.END_LI
+
+    @staticmethod
+    def log(msg, lev=str, must=False):
+        # type: (str, str, bool) -> None
+        if is_verbose or must:
+            if not platform.system() == "Windows":
+                if lev == 'i':
+                    PLog.log_info('%s' % msg)
+                elif lev == 'd':
+                    PLog.log_debug('%s' % msg)
+                elif lev == 'w':
+                    PLog.log_warning('%s' % msg)
+                elif lev == 'e':
+                    PLog.log_error('%s' % msg)
+                elif lev == 'a':
+                    PLog.log_assert('%s' % msg)
+                else:
+                    PLog.log_normal('%s' % msg)
+            else:
+                print '%s\n' % msg
+
+
+def is_platform_windows():
+    sys_str = platform.system()
+    if sys_str == "Windows":
+        return True
+    else:
+        return False
+
+
 if __name__ == '__main__':
     folder_path = ''
     if len(sys.argv) < 2:
-        print error_info
+        PLog.log(enter_error_info, 'e', True)
         exit(1)
     parser = optparse.OptionParser('\n%prog ' + ' -p \n\tOr %prog <folder>\n' + hint_help_info)
     parser.add_option('-v', dest='v_verbose', action="store_true", help="see verbose", default=False)
     parser.add_option('-f', '--folder', dest='f_folder', type="string", help="path of folder Default is .",
                       default=".", metavar=".")
-    parser.add_option('-l', '--level', dest='l_level', type="int", help="top level Default 77",
-                      default=77, metavar=77)
+    parser.add_option('-l', '--level', dest='l_level', type="int", help="top level Default 7",
+                      default=7, metavar=7)
     (options, args) = parser.parse_args()
     if options.v_verbose:
         is_verbose = True
@@ -43,13 +111,12 @@ if __name__ == '__main__':
         folder_path = options.f_folder
     if not is_verbose:
         print
-        'todo what you want before'
+        'todo what you want delete this'
+        PLog.log("todo what you want before", 'w', True)
         exit(1)
     if not os.path.exists(folder_path):
-        print
-        "Your input Folder is not exist " + folder_path
+        PLog.log("Error your input Folder %s is not exist" % folder_path, 'e', True)
         exit(1)
     if os.path.isdir(folder_path) < 1:
-        print
-        "You input " + folder_path + "is not folder"
+        PLog.log("Error your input path %s is not folder" % folder_path, 'e', True)
         exit(1)
