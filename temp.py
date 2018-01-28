@@ -100,6 +100,7 @@ def is_platform_windows():
 
 
 def check_runtime():
+    PLog.log('Python version %s' % platform.python_version(), 'd')
     version_split = platform.python_version().split('.')
     if version_split[0] != '2':
         PLog.log(runtime_version_error, 'e', True)
@@ -114,7 +115,6 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         PLog.log(enter_error_info, 'e', True)
         exit(1)
-    check_runtime()
     parser = optparse.OptionParser('\n%prog ' + ' -p \n\tOr %prog <folder>\n' + hint_help_info)
     parser.add_option('-v', dest='v_verbose', action="store_true", help="see verbose", default=False)
     parser.add_option('-f', '--folder', dest='f_folder', type="string", help="path of folder Default is .",
@@ -128,6 +128,7 @@ if __name__ == '__main__':
         top_level = options.l_level
     if options.f_folder is not None:
         folder_path = options.f_folder
+    check_runtime()
     if not is_verbose:
         # TODO delete this for dev
         print
