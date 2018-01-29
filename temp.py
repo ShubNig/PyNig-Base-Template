@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import re
 import sys
 import platform
 import optparse
@@ -30,9 +29,6 @@ This script must run python 2.6.+
 
 
 class PLog:
-    """
-    for print log color
-    """
 
     def __init__(self):
         pass
@@ -47,28 +43,39 @@ class PLog:
     END_LI = '\033[0m'
 
     @staticmethod
+    def check_runtime():
+        PLog.log('Python version %s' % platform.python_version(), 'd')
+        version_split = platform.python_version().split('.')
+        if version_split[0] != '2':
+            PLog.log(runtime_version_error, 'e', True)
+            exit(1)
+        if version_split[1] < '6':
+            PLog.log(runtime_version_error, 'e', True)
+            exit(1)
+
+    @staticmethod
     def log_normal(info):
-        print PLog.WRITE + info + PLog.END_LI
+        print (PLog.WRITE + info + PLog.END_LI)
 
     @staticmethod
     def log_assert(info):
-        print PLog.BLACK + info + PLog.END_LI
+        print (PLog.BLACK + info + PLog.END_LI)
 
     @staticmethod
     def log_info(info):
-        print PLog.OK_GREEN + info + PLog.END_LI
+        print (PLog.OK_GREEN + info + PLog.END_LI)
 
     @staticmethod
     def log_debug(info):
-        print PLog.OK_BLUE + info + PLog.END_LI
+        print (PLog.OK_BLUE + info + PLog.END_LI)
 
     @staticmethod
     def log_warning(info):
-        print PLog.WARNING + info + PLog.END_LI
+        print (PLog.WARNING + info + PLog.END_LI)
 
     @staticmethod
     def log_error(info):
-        print PLog.ERROR + info + PLog.END_LI
+        print (PLog.ERROR + info + PLog.END_LI)
 
     @staticmethod
     def log(msg, lev=str, must=False):
@@ -88,7 +95,7 @@ class PLog:
                 else:
                     PLog.log_normal('%s' % msg)
             else:
-                print '%s\n' % msg
+                print ('%s\n' % msg)
 
 
 def is_platform_windows():
@@ -99,18 +106,8 @@ def is_platform_windows():
         return False
 
 
-def check_runtime():
-    PLog.log('Python version %s' % platform.python_version(), 'd')
-    version_split = platform.python_version().split('.')
-    if version_split[0] != '2':
-        PLog.log(runtime_version_error, 'e', True)
-        exit(1)
-    if version_split[1] < '6':
-        PLog.log(runtime_version_error, 'e', True)
-        exit(1)
-
-
 if __name__ == '__main__':
+    PLog.check_runtime()
     folder_path = ''
     if len(sys.argv) < 2:
         PLog.log(enter_error_info, 'e', True)
@@ -128,7 +125,6 @@ if __name__ == '__main__':
         top_level = options.l_level
     if options.f_folder is not None:
         folder_path = options.f_folder
-    check_runtime()
     if not is_verbose:
         # TODO delete this for dev
         print
