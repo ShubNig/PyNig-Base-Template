@@ -9,7 +9,6 @@ import optparse
 __author__ = 'sinlov'
 
 is_verbose = False
-top_level = 1
 folder_path = os.getcwd()
 
 hint_help_info = """
@@ -29,7 +28,6 @@ This script must run python 2.6.+
 
 
 class PLog:
-
     def __init__(self):
         pass
 
