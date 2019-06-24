@@ -5,6 +5,7 @@ shell_now_path_folder=$(pwd | awk -F "/" '{print $(NF)}')
 
 prod_virtualenv_name="${shell_now_path_folder}"
 want_install_modules=(
+  pytest
 )
 
 
@@ -39,7 +40,9 @@ checkUserAsRoot(){
 
 checkEnv virtualenv
 
-virtualenv --system-site-packages ${prod_virtualenv_name}
+virtualenv ${prod_virtualenv_name}
+checkFuncBack "virtualenv ${prod_virtualenv_name}"
+#virtualenv --system-site-packages ${prod_virtualenv_name}
 
 source ${prod_virtualenv_name}/bin/activate
 

@@ -8,6 +8,9 @@ import optparse
 
 __author__ = 'sinlov'
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 is_verbose = False
 folder_path = os.getcwd()
 
@@ -15,12 +18,14 @@ hint_help_info = """
 more information see
 """
 
+cwd_script_file_name = sys.argv[0][sys.argv[0].rfind(os.sep) + 1:]
 enter_error_info = """
 Your input error
     Usage:
-        ./temp.py --help
-    or input [-h] to see help
-"""
+        python {0} --help
+or input:
+    ./{0} -h to see help
+""".format(cwd_script_file_name)
 
 runtime_version_error = """
 This script must run python 2.6.+
@@ -40,15 +45,24 @@ class PLog:
     BLACK = '\033[97m'
     END_LI = '\033[0m'
 
+    _runtime_version_error = """
+This script must run python 2.6.+
+"""
+    _is_verbose = False
+
+    @staticmethod
+    def set_verbose(verbose=False):
+        PLog._is_verbose = verbose
+
     @staticmethod
     def check_runtime():
         PLog.log('Python version %s' % platform.python_version(), 'd')
         version_split = platform.python_version().split('.')
         if version_split[0] != '2':
-            PLog.log(runtime_version_error, 'e', True)
+            PLog.log(PLog._runtime_version_error, 'e', True)
             exit(1)
         if version_split[1] < '6':
-            PLog.log(runtime_version_error, 'e', True)
+            PLog.log(PLog._runtime_version_error, 'e', True)
             exit(1)
 
     @staticmethod
@@ -78,22 +92,28 @@ class PLog:
     @staticmethod
     def log(msg, lev=str, must=False):
         # type: (str, str, bool) -> None
-        if is_verbose or must:
-            if not platform.system() == "Windows":
-                if lev == 'i':
+        if not platform.system() == "Windows":
+            if lev == 'i':
+                if PLog._is_verbose or must:
                     PLog.log_info('%s' % msg)
-                elif lev == 'd':
+            elif lev == 'd':
+                if PLog._is_verbose or must:
                     PLog.log_debug('%s' % msg)
-                elif lev == 'w':
-                    PLog.log_warning('%s' % msg)
-                elif lev == 'e':
-                    PLog.log_error('%s' % msg)
-                elif lev == 'a':
-                    PLog.log_assert('%s' % msg)
-                else:
-                    PLog.log_normal('%s' % msg)
+            elif lev == 'w':
+                PLog.log_warning('%s' % msg)
+            elif lev == 'e':
+                PLog.log_error('%s' % msg)
+            elif lev == 'a':
+                PLog.log_assert('%s' % msg)
             else:
-                print ('%s\n' % msg)
+                if PLog._is_verbose or must:
+                    PLog.log_normal('%s' % msg)
+        else:
+            if lev == 'w' or lev == 'e':
+                print('%s\n' % msg)
+            else:
+                if PLog._is_verbose or must:
+                    print('%s\n' % msg)
 
 
 def is_platform_windows():
