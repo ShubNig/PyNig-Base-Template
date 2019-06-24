@@ -137,7 +137,6 @@ This script must run python 2.6.+
     @staticmethod
     def init_logger(first_tag, sec_tag=str):
         # type: (str, str) -> Logger
-        global logger
         log_file = first_tag + sec_tag + '.log'
         log_path = PLog.check_current_log_path_and_auto_clean()
         log_path_join = os.path.join(log_path, log_file)
@@ -175,8 +174,8 @@ This script must run python 2.6.+
             print (PLog.WRITE + info + PLog.END_LI)
         else:
             print (info)
-        if logger:
-            logger.critical(info)
+        if PLog.logger:
+            PLog.logger.critical(info)
 
     @staticmethod
     def log_assert(info):
@@ -184,8 +183,8 @@ This script must run python 2.6.+
             print (PLog.BLACK + info + PLog.END_LI)
         else:
             print (info)
-        if logger:
-            logger.error(info)
+        if PLog.logger:
+            PLog.logger.error(info)
 
     @staticmethod
     def log_info(info):
@@ -193,8 +192,8 @@ This script must run python 2.6.+
             print (PLog.OK_GREEN + info + PLog.END_LI)
         else:
             print (info)
-        if logger:
-            logger.info(info)
+        if PLog.logger:
+            PLog.logger.info(info)
 
     @staticmethod
     def log_debug(info):
@@ -202,8 +201,8 @@ This script must run python 2.6.+
             print (PLog.OK_BLUE + info + PLog.END_LI)
         else:
             print (info)
-        if logger:
-            logger.debug(info)
+        if PLog.logger:
+            PLog.logger.debug(info)
 
     @staticmethod
     def log_warning(info):
@@ -211,8 +210,8 @@ This script must run python 2.6.+
             print (PLog.WARNING + info + PLog.END_LI)
         else:
             print (info)
-        if logger:
-            logger.warning(info)
+        if PLog.logger:
+            PLog.logger.warning(info)
 
     @staticmethod
     def log_error(info):
@@ -220,8 +219,8 @@ This script must run python 2.6.+
             print (PLog.ERROR + info + PLog.END_LI)
         else:
             print (info)
-        if logger:
-            logger.error(info)
+        if PLog.logger:
+            PLog.logger.error(info)
 
     @staticmethod
     def log(msg, lev=str, must=False):
