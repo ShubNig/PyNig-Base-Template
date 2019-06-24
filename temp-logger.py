@@ -132,7 +132,8 @@ This script must run python 2.6.+
     @staticmethod
     def init_logger_by_time(tag=str):
         # type: (str) -> Logger
-        return PLog.init_logger(tag, PLog.find_now_time_format('%Y_%m_%d_%H_%M_%S'))
+        PLog.logger = PLog.init_logger(tag, PLog.find_now_time_format('%Y_%m_%d_%H_%M_%S'))
+        return PLog.logger
 
     @staticmethod
     def init_logger(first_tag, sec_tag=str):
