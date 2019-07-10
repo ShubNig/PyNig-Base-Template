@@ -8,7 +8,7 @@ TOP_DIR := $(shell pwd)
 
 INFO_MAIN_SCRIPT := temp.py
 
-INFO_PYPI_MIRROR ?= http://mirrors.cloud.aliyuncs.com/pypi/simple/
+INFO_PYPI_MIRROR ?= https://pypi.tuna.tsinghua.edu.cn/simple/
 
 init:
 	@echo "~> start init this project"
